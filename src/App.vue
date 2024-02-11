@@ -1,29 +1,41 @@
 <template>
   <div id="app">
     <header>
-      <!-- Seu cabeçalho aqui -->
     </header>
     <main>
-      <KnightsList />
+      <KnightsList :knights="knights"/>
+      <KnightForm @form-submitted="addKnight"/>
     </main>
     <footer>
-      <!-- Seu rodapé aqui -->
     </footer>
   </div>
 </template>
 
 <script>
 import KnightsList from './components/KnightsList.vue';
+import KnightForm from './components/KnightForm.vue';
 
 export default {
+ 
   components: {
-    KnightsList
+    KnightsList,
+    KnightForm
+  },
+  mounted() {
+    const knightsFromLocalStorage = JSON.parse(localStorage.getItem('knights')) || [];
+    this.knights = knightsFromLocalStorage;
+  },
+  methods: {
+    addKnight(newKnight) {
+      this.knights.push(newKnight);
+      localStorage.setItem('knights', JSON.stringify(this.knights));
+    }
   }
 };
 </script>
 
 <style>
-/* Estilos globais ou do componente App */
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -37,7 +49,7 @@ body {
 }
 
 header {
-  /* Estilos do cabeçalho */
+
 }
 
 main {
@@ -46,6 +58,6 @@ main {
 }
 
 footer {
-  /* Estilos do rodapé */
+ 
 }
 </style>

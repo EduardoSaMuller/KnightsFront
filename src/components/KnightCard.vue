@@ -1,17 +1,30 @@
 <template>
     <div class="knight-card" :style="{ backgroundColor: getClassColor(knight.class)}" @mouseover="darkenColor" @mouseleave="resetColor">
-        <img :src="knight.imageUrl" :alt="knight.name">
+        <!-- <img :src="knight.imageUrl" :alt="knight.name"> -->
         <h2>{{ knight.name }}</h2>
-        <p> Age: {{ knight.age }}</p>
-        <p> Weapons: {{ knight.weapons }}</p>
-        <p> Attribute: {{ knight.attribute }}</p>
-        <p> Attack: {{ knight.attack }}</p>
-        <p> Exp: {{ knight.exp }}</p>
+        <p>Nickname: {{ knight.nickname }}</p>
+        <p>Class: {{ knight.class }} </p>
+        <p>Birthday: {{ knight.birthday }}</p>
+        <p>Weapon: {{ knight.weapons.name }}</p>
+        <p>Attributes:</p>
+        <ul>
+            <li>Strength: {{ knight.attributes.strength }}</li>
+            <li>Dexterity:{{ knight.attributes.dexterity }}</li>
+            <li>Constitution: {{ knight.attributes.constitution }}</li>
+            <li>Intelligence: {{ knight.attributes.intelligence }}</li>
+            <li>Wisdom: {{ knight.attributes.wisdom }}</li>
+            <li>Charisma: {{ knight.attributes.charisma }}</li>
+        </ul>
+       
+        <p>Key Attribute: {{ determineKeyAttribute(knight.class) }}</p>
+        <p>Attack: {{ calculateAttack(knight) }}</p>
+        <p>Experience: {{ calculateExperience(knight) }}</p>
     </div>
+    
 </template>
 
 <script>
-import {knightsData, classColors} from '@/utils/KnightsData.js';
+import {knightsData, classColors, calculateAttack,calculateExperience, determineKeyAttribute} from '@/utils/KnightsData.js';
 
  export default {
     props: {
@@ -25,7 +38,10 @@ import {knightsData, classColors} from '@/utils/KnightsData.js';
     methods: {
         getClassColor(knightClass){
             return classColors[knightClass] || '#262835'
-        }
+        },
+        calculateAttack,
+        calculateExperience,
+        determineKeyAttribute
     }
  }
 </script>
