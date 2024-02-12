@@ -1,31 +1,38 @@
 <template>
-    <div class="knights-list">
-      <knight-card v-for="knight in knightsData" :key="knight.id" :knightId="knight.id" />
-    </div>
-    <ul>
-      <li v-for="(knight, index) in knights" :key="index">
-        {{ knight.name }} - {{ knight.class }} 
-      </li>
-    </ul>
+  <div class="knights-list">
+    <knight-card v-for="knight in knights" :key="knight.id" :knight="knight" @open-edit-modal="openKnightModalEdit" />
+    
+    <!-- Modal de edição -->
+    <knight-modal-edit
+      v-if="isKnightModalEditOpen"
+      :knightDetails="selectedKnightDetails"
+      @close-modal="closeKnightModalEdit"
+      @update-knight="updateKnight"
+    />
+  </div>
 </template>
 <script>
-import KnightCard from './KnightCard.vue';
-import { knightsData } from '../utils/KnightsData.js';
+import { getAllKnights,  } from '@/services/KnightService';
 
 export default {
-  components: {
-    KnightCard
-  },
   data() {
     return {
-      knightsData: knightsData,
-      knights: []
+      knights: [],
     };
   },
   mounted() {
-    // Recuperar os knights armazenados no localStorage quando o componente é montado
-    this.knights = JSON.parse(localStorage.getItem('knights')) || [];
-  }
+    this.fetchKnights();
+  },
+  methods: {
+    async fetchKnights() {
+      try {
+        const response = await getAllKnights();
+        this.knights = response.data;
+      } catch (error) {
+        console.error('Error fetching knights:', error);
+      }
+    },
+  },
 };
 </script>
 

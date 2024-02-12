@@ -1,63 +1,61 @@
 <template>
-  <div id="app">
-    <header>
-    </header>
-    <main>
-      <KnightsList :knights="knights"/>
-      <KnightForm @form-submitted="addKnight"/>
-    </main>
-    <footer>
-    </footer>
+  <div class="app">
+    <div v-if="loading">Carregando...</div>
+    <div v-else>
+      <div v-if="error">{{ error }}</div>
+      <div v-else>
+        <div v-if="knights.length === 0">Nenhum cavaleiro encontrado.</div>
+        <div v-else>
+          <div v-for="knight in knights" :key="knight.id">
+            <knight-card :knight="knight" />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import KnightsList from './components/KnightsList.vue';
-import KnightForm from './components/KnightForm.vue';
+import KnightCard from './components/KnightCard.vue';
+import { getAllKnights } from './services/KnightService';
 
 export default {
- 
   components: {
-    KnightsList,
-    KnightForm
+    KnightCard
+  },
+  data() {
+    return {
+      knights: [],
+      loading: false,
+      error: null
+    };
   },
   mounted() {
-    const knightsFromLocalStorage = JSON.parse(localStorage.getItem('knights')) || [];
-    this.knights = knightsFromLocalStorage;
+    this.fetchKnights();
   },
   methods: {
-    addKnight(newKnight) {
-      this.knights.push(newKnight);
-      localStorage.setItem('knights', JSON.stringify(this.knights));
+    fetchKnights() {
+      this.loading = true;
+      getAllKnights()
+        .then(response => {
+          this.knights = response.data;
+          console.log('Dados dos cavaleiros:', this.knights); // Verificar os dados recebidos
+        })
+        .catch(error => {
+          this.error = 'Erro ao buscar os cavaleiros: ' + error.message;
+          console.error('Erro ao buscar os cavaleiros:', error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     }
   }
 };
 </script>
 
 <style>
-
-body {
+.app {
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-#app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-header {
-
-}
-
-main {
-  flex: 1;
   padding: 20px;
-}
-
-footer {
- 
 }
 </style>

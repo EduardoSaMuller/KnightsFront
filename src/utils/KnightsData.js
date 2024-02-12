@@ -4,7 +4,7 @@ export const knightsData = [
     "name": "Laurenti",
     "nickname": "The Brave",
     "birthday": "1995-05-15",
-    "class": "warlock",
+    "classe": "warlock",
     "weapons": [
       {
         "name": "sword",
@@ -28,7 +28,7 @@ export const knightsData = [
     "name": "Laurenti",
     "nickname": "The Brave",
     "birthday": "1995-05-15",
-    "class": "cleric",
+    "classe": "cleric",
     "weapons": [
       {
         "name": "sword",
@@ -52,7 +52,7 @@ export const knightsData = [
     "name": "Laurenti",
     "nickname": "The Brave",
     "birthday": "1995-05-15",
-    "class" : "bloodHunter",
+    "classe" : "bloodHunter",
     "weapons": [
       {
         "name": "sword",
@@ -99,25 +99,39 @@ export function calculateExperience(knight) {
 
 export function calculateAttack(knight) {
   const keyAttrValue = knight.attributes[knight.keyAttribute];
-  const equippedWeaponMod = knight.weapons.find(weapon => weapon.equipped).mod;
-  let attack = 10;
-
+  const equippedWeaponMod = knight.weapons.reduce((acc, weapon) => {
+    return weapon.equipped ? acc + weapon.mod : acc;
+  }, 0);
+  let mod = 0;
   if (keyAttrValue >= 0 && keyAttrValue <= 8) {
-    attack += -2;
+    mod = -2;
   } else if (keyAttrValue >= 9 && keyAttrValue <= 10) {
-    attack += -1;
-  } else if (keyAttrValue >= 11 && keyAttrValue <= 12) {
-    attack += 0;
+    mod = -1;
   } else if (keyAttrValue >= 13 && keyAttrValue <= 15) {
-    attack += 1;
+    mod = 1;
   } else if (keyAttrValue >= 16 && keyAttrValue <= 18) {
-    attack += 2;
+    mod = 2;
   } else if (keyAttrValue >= 19 && keyAttrValue <= 20) {
-    attack += 3;
+    mod = 3;
+  }
+  return 10 + mod + equippedWeaponMod;
+}
+export function calculateAge(birthDate) {
+  const today = new Date();
+  const birthDateObj = new Date(birthDate);
+  let age = today.getFullYear() - birthDateObj.getFullYear();
+  const monthToday = today.getMonth() + 1;
+  const dayToday = today.getDate();
+  const birthMonth = birthDateObj.getMonth() + 1;
+  const birthDay = birthDateObj.getDate();
+
+  if (monthToday < birthMonth || (monthToday === birthMonth && dayToday < birthDay)) {
+    age--;
   }
 
-  return attack + equippedWeaponMod;
+  return age;
 }
+
 
 export function determineKeyAttribute(knightClass) {
   switch (knightClass) {

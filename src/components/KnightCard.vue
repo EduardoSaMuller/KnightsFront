@@ -1,62 +1,77 @@
 <template>
-    <div class="knight-card" :style="{ backgroundColor: getClassColor(knight.class)}" @mouseover="darkenColor" @mouseleave="resetColor">
-        <!-- <img :src="knight.imageUrl" :alt="knight.name"> -->
-        <h2>{{ knight.name }}</h2>
-        <p>Nickname: {{ knight.nickname }}</p>
-        <p>Class: {{ knight.class }} </p>
-        <p>Birthday: {{ knight.birthday }}</p>
-        <p>Weapon: {{ knight.weapons.name }}</p>
-        <p>Attributes:</p>
-        <ul>
-            <li>Strength: {{ knight.attributes.strength }}</li>
-            <li>Dexterity:{{ knight.attributes.dexterity }}</li>
-            <li>Constitution: {{ knight.attributes.constitution }}</li>
-            <li>Intelligence: {{ knight.attributes.intelligence }}</li>
-            <li>Wisdom: {{ knight.attributes.wisdom }}</li>
-            <li>Charisma: {{ knight.attributes.charisma }}</li>
-        </ul>
-       
-        <p>Key Attribute: {{ determineKeyAttribute(knight.class) }}</p>
-        <p>Attack: {{ calculateAttack(knight) }}</p>
-        <p>Experience: {{ calculateExperience(knight) }}</p>
-    </div>
-    
+  <div
+    class="knight-card"
+    v-if="knight"
+    :style="{ borderColor: getClassColor(knight.classe) }"
+  >
+    <h2>{{ knight.name }}, {{ knight.nickname }}</h2>
+    <p>Classe: {{ knight.classe }} ,</p>
+    <p>Idade: {{ calculateAge(knight.birthday)}} anos</p>
+    <p>Armas {{ knight.weapons.length }}</p>
+    <p>Armas:</p>
+    <ul>
+      <li v-for="(weapon, index) in knight.weapons" :key="index">
+        {{ weapon.name }} (Mod: {{ weapon.mod }}) <span v-if="weapon.equipped">(Equipada)</span>
+
+      </li>
+    </ul>
+    <p>Ataque {{ calculateAttack(knight) }}</p>
+    <p>Atributos:</p>
+    <ul>
+      <li>Força: {{ knight.attributes.strength }}</li>
+      <li>Destreza:{{ knight.attributes.dexterity }}</li>
+      <li>Constituição: {{ knight.attributes.constitution }}</li>
+      <li>Inteligência: {{ knight.attributes.intelligence }}</li>
+      <li>Sabedoria: {{ knight.attributes.wisdom }}</li>
+      <li>Carisma: {{ knight.attributes.charisma }}</li>
+    </ul>
+    <p>Attributo Principal: {{ determineKeyAttribute(knight.class) }}</p>
+    <p>Experiência: {{ calculateExperience(knight) }}</p>
+  </div>
+  <div v-else>
+    <!-- Se knight não for encontrado nenhum knight -->
+    Cavaleiro não encontrado.
+  </div>
 </template>
 
 <script>
-import {knightsData, classColors, calculateAttack,calculateExperience, determineKeyAttribute} from '@/utils/KnightsData.js';
+import {
+  calculateAge,
+  classColors,
+  calculateAttack,
+  calculateExperience,
+  determineKeyAttribute,
+} from "@/utils/KnightsData.js";
 
- export default {
-    props: {
-       knightId: Number,
+export default {
+  props: {
+    knight: Object,
+  },
+  methods: {
+    getClassColor(knightClass) {
+      return classColors[knightClass] || "#262835";
     },
-    computed: {
-        knight(){
-            return knightsData.find(knight => knight.id ===this.knightId)
-        }
-    },
-    methods: {
-        getClassColor(knightClass){
-            return classColors[knightClass] || '#262835'
-        },
-        calculateAttack,
-        calculateExperience,
-        determineKeyAttribute
-    }
- }
+    calculateAge,
+    calculateAttack,
+    calculateExperience,
+    determineKeyAttribute,
+  },
+};
 </script>
 
 <style lang="scss" scoped>
+/* Estilos do componente KnightCard */
 .knight-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  max-width: 400px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  padding: 20px;
-  margin: 8px ;
+  margin: 8px;
   position: relative;
   overflow: hidden;
-  
-  &:hover{
-    cursor: pointer;
-  }
+  border: 2px solid;
 }
 </style>
