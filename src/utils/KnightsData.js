@@ -1,79 +1,3 @@
-export const knightsData = [
-  {
-    "id": 1,
-    "name": "Laurenti",
-    "nickname": "The Brave",
-    "birthday": "1995-05-15",
-    "classe": "warlock",
-    "weapons": [
-      {
-        "name": "sword",
-        "mod": 3,
-        "attr": "strength",
-        "equipped": true
-      }
-    ],
-    "attributes": {
-      "strength": 12,
-      "dexterity": 10,
-      "constitution": 14,
-      "intelligence": 8,
-      "wisdom": 11,
-      "charisma": 9
-    },
-    "keyAttribute": "strength"
-  },
-  {
-    "id": 2,
-    "name": "Laurenti",
-    "nickname": "The Brave",
-    "birthday": "1995-05-15",
-    "classe": "cleric",
-    "weapons": [
-      {
-        "name": "sword",
-        "mod": 3,
-        "attr": "strength",
-        "equipped": true
-      }
-    ],
-    "attributes": {
-      "strength": 16,
-      "dexterity": 14,
-      "constitution": 12,
-      "intelligence": 11,
-      "wisdom": 20,
-      "charisma": 18
-    },
-    "keyAttribute": "strength"
-  },
-  {
-    "id": 3,
-    "name": "Laurenti",
-    "nickname": "The Brave",
-    "birthday": "1995-05-15",
-    "classe" : "bloodHunter",
-    "weapons": [
-      {
-        "name": "sword",
-        "mod": 3,
-        "attr": "strength",
-        "equipped": true
-      }
-    ],
-    "attributes": {
-      "strength": 12,
-      "dexterity": 10,
-      "constitution": 14,
-      "intelligence": 8,
-      "wisdom": 11,
-      "charisma": 9
-    },
-    "keyAttribute": "strength"
-  },
-]
- 
-
 export const classColors = {
   artificer: '#40E0D0',
   barbarian: '#FF0000',
@@ -131,7 +55,44 @@ export function calculateAge(birthDate) {
 
   return age;
 }
-
+export function getImageSource(knightClass) {
+  // Determine o caminho da imagem com base na classe do cavaleiro
+  switch (knightClass) {
+    case "artificer":
+      return require("@/assets/artificer.webp");
+    case "barbarian":
+      return require("@/assets/barbarian.webp");
+    case "bard":
+      return require("@/assets/bard.webp");
+    case "bloodHunter":
+      return require("@/assets/bloodhunter.webp");
+    case "cleric":
+      return require("@/assets/cleric.webp");
+    case "druid":
+      return require("@/assets/druid.webp");
+    case "fighter":
+      return require("@/assets/fighter.webp");
+    case "monk":
+      return require("@/assets/monk.webp");
+    case 'paladin':
+      return require('@/assets/paladin.webp');
+    case "ranger":
+      return require("@/assets/ranger.webp");
+    case "rogue":
+      return require("@/assets/rogue.webp");
+    case "sorcerer":
+      return require("@/assets/sorcerer.webp");
+    case "warlock":
+      return require("@/assets/warlock.webp");
+    case "wizard":
+      return require("@/assets/wizard.webp");
+      
+    // Adicione mais casos conforme necessário para outras classes
+    default:
+      // Retorne um caminho padrão se a classe não for encontrada
+      return "";
+  }
+}
 
 export function determineKeyAttribute(knightClass) {
   switch (knightClass) {

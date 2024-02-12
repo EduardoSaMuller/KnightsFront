@@ -1,4 +1,5 @@
 <template>
+  <AppHeader title="Knights Challenge"/>
   <div class="app">
     <div v-if="loading">Carregando...</div>
     <div v-else>
@@ -6,28 +7,33 @@
       <div v-else>
         <div v-if="knights.length === 0">Nenhum cavaleiro encontrado.</div>
         <div v-else>
-          <div v-for="knight in knights" :key="knight.id">
-            <knight-card :knight="knight" />
-          </div>
+          <KnightList/>
         </div>
       </div>
-    </div>
+    </div> 
+    <button @click="openCreateModal">Criar Knight</button>
+    <KnightModalCreate ref="modalCreate" />
   </div>
-</template>
-
+</template> 
 <script>
-import KnightCard from './components/KnightCard.vue';
-import { getAllKnights } from './services/KnightService';
 
+import KnightModalCreate from './components/KnightModalCreate.vue';
+import { getAllKnights } from './services/KnightService';
+import KnightList from './components/KnightList.vue';
+import AppHeader from './components/AppHeader.vue';
 export default {
   components: {
-    KnightCard
+    AppHeader,
+    
+    KnightModalCreate,
+    KnightList
   },
   data() {
     return {
       knights: [],
       loading: false,
-      error: null
+      error: null,
+      showCreateModal: false,
     };
   },
   mounted() {
@@ -48,6 +54,13 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+    openCreateModal() {
+      if (this.$refs.modalCreate) {
+        this.$refs.modalCreate.toggleModal();
+      } else {
+        console.error("$refs.modalCreate não está definido. Verifique se o componente KnightModalCreate está corretamente referenciado com ref='modalCreate'.");
+      }
     }
   }
 };
@@ -57,5 +70,6 @@ export default {
 .app {
   font-family: Arial, sans-serif;
   padding: 20px;
+  background-color:  #8e8e8e;
 }
 </style>
