@@ -1,5 +1,4 @@
 // KnightService.js
-
 import axios from 'axios';
 
 const API_URL = 'http://localhost:3000';
@@ -35,8 +34,25 @@ function createKnight(knightData) {
     });
 }
 
+function deleteKnight(id) {
+  return axios.delete(`${API_URL}/knights/${id}`)
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => {
+      throw new Error('Erro ao excluir um cavaleiro:', error);
+    });
+}
+async function addKnightToHeroes(knight) {
+  try {
+    const response = await axios.post(`${API_URL}/knights/heroes`, knight);
+    console.log('Cavaleiro adicionado aos heróis com sucesso:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao adicionar cavaleiro aos heróis:', error);
+    throw error;
+  }
+}
 
 
-
-// Exportando as funções
-export { getAllKnights, getKnightById, updateKnight ,createKnight };
+export { getAllKnights, getKnightById, updateKnight ,createKnight ,deleteKnight , addKnightToHeroes};

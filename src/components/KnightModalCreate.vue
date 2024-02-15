@@ -2,18 +2,18 @@
   <div class="modal-overlay" v-if="isOpen" @click="closeModal">
     
     <div class="modal-content" @click.stop>
-      <button @click="closeModal" class="close-btn">Fechar modal</button>
-      <knight-form />
+      <button  @click="closeModal" class="close-btn button-secondary">X</button>
+      <KnightCreateForm />
     </div>
   </div>
 </template>
 
 <script>
-import KnightForm from './KnightForm.vue';
+import KnightCreateForm from './KnightCreateForm.vue';
 
 export default {
   components: {
-    KnightForm,
+    KnightCreateForm,
   },
   data() {
     return {
@@ -38,10 +38,11 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(255, 255, 255, 0.8); /* Fundo branco com opacidade */
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 999; /* z-index maior para estar na frente dos outros elementos */
 }
 
 .modal-content {

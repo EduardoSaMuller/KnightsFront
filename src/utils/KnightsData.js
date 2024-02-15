@@ -35,7 +35,7 @@ export function calculateAttack(knight) {
     mod = 1;
   } else if (keyAttrValue >= 16 && keyAttrValue <= 18) {
     mod = 2;
-  } else if (keyAttrValue >= 19 && keyAttrValue <= 20) {
+  } else if (keyAttrValue >= 19 && keyAttrValue <= 30) {
     mod = 3;
   }
   return 10 + mod + equippedWeaponMod;
@@ -56,7 +56,6 @@ export function calculateAge(birthDate) {
   return age;
 }
 export function getImageSource(knightClass) {
-  // Determine o caminho da imagem com base na classe do cavaleiro
   switch (knightClass) {
     case "artificer":
       return require("@/assets/artificer.webp");
@@ -86,10 +85,7 @@ export function getImageSource(knightClass) {
       return require("@/assets/warlock.webp");
     case "wizard":
       return require("@/assets/wizard.webp");
-      
-    // Adicione mais casos conforme necessário para outras classes
     default:
-      // Retorne um caminho padrão se a classe não for encontrada
       return "";
   }
 }
@@ -99,22 +95,22 @@ export function determineKeyAttribute(knightClass) {
     case 'bard':
     case 'sorcerer':
     case 'warlock':
-      return 'charisma';
+      return 'Carisma';
     case 'druid':
     case 'cleric':
-      return 'wisdom';
+      return 'Sabedoria';
     case 'fighter':
     case 'paladin':
     case 'barbarian':
     case 'bloodhunter':
-      return 'strength';
+      return 'Força';
     case 'rogue':
     case 'ranger':
-      return 'dexterity';
+      return 'Destreza';
     case 'wizard':
     case 'artificer':
-      return 'intelligence';
+      return 'Inteligência';
     default:
-      return 'strength'; // Padrão para outras classes desconhecidas
+      return 'Força'; // Padrão para outras classes desconhecidas
   }
 }
