@@ -1,55 +1,38 @@
 <template>
-  <div
-    class="knight-card"
-    v-if="knight"
-    :style="{ borderColor: getClassColor(knight.classe) }"
-  >
+  <div class="knight-card" v-if="knight" :style="{ borderColor: getClassColor(knight.classe) }">
     <img :src="getImageSource(knight.classe)" alt="Knight Logo" />
-    <h3>{{ knight.name }}, {{ knight.nickname }}</h3>
+     <h3>{{ capitalizeFirstLetters(knight.name) }}, {{ capitalizeFirstLetters(knight.nickname) }}</h3>
     <div class="knight-info1">
-      <p>Classe: {{ knight.classe }}</p>
+      <p>Classe: {{ capitalizeFirstLetter(knight.classe) }}</p>
       <p>Idade: {{ calculateAge(knight.birthday) }} anos</p>
     </div>
     <div class="knight-info2">
       <p>Qtd de Armas: {{ knight.weapons.length }}</p>
-      <p>Ataque {{ calculateAttack(knight) }}</p>
-      
+      <p>Ataque: {{ calculateAttack(knight) }}</p>
     </div>
     <p>Armas:</p>
-      <ul>
-        <li v-for="(weapon, index) in knight.weapons" :key="index">
-          {{ weapon.name }} (Mod: {{ weapon.mod }})
-          <span v-if="weapon.equipped">(Equipada)</span>
-        </li>
-      </ul>
+    <ul>
+      <li v-for="(weapon, index) in knight.weapons" :key="index">
+        {{ weapon.name }} (Mod: {{ weapon.mod }})
+        <span v-if="weapon.equipped">(Equipada)</span>
+      </li>
+    </ul>
     <p>Atributos:</p>
     <ul>
-      <li>Força: {{ knight.attributes.strength }}</li>
-      <li>Destreza:{{ knight.attributes.dexterity }}</li>
-      <li>Constituição: {{ knight.attributes.constitution }}</li>
-      <li>Inteligência: {{ knight.attributes.intelligence }}</li>
-      <li>Sabedoria: {{ knight.attributes.wisdom }}</li>
-      <li>Carisma: {{ knight.attributes.charisma }}</li>
+      <li>For: {{ knight.attributes.strength }}</li>
+      <li>Des:{{ knight.attributes.dexterity }}</li>
+      <li>Cons: {{ knight.attributes.constitution }}</li>
+      <li>Int: {{ knight.attributes.intelligence }}</li>
+      <li>Sab: {{ knight.attributes.wisdom }}</li>
+      <li>Car: {{ knight.attributes.charisma }}</li>
     </ul>
-    <p>Attributo Principal: {{ determineKeyAttribute(knight.class) }}</p>
+    <p>Atributo Principal: {{ determineKeyAttribute(knight.classe) }}</p>
     <p>Experiência: {{ calculateExperience(knight) }}</p>
-    <button @click="openModal">Editar</button>
-    <div class="modal" v-if="isModalOpen" @click.self="closeModal">
-      <div class="modal-content">
-        <span class="close" @click="closeModal">&times;</span>
-        <h2>Edit Knight</h2>
-        <div>
-          <label for="nickname">Nickname:</label>
-          <input type="text" id="nickname" v-model="editedNickname" required>
-          <button @click="updateKnight">Salvar</button>
-        </div>
-      </div>
-    </div>
+    <button class="button-primary" @click="openModal(knight)">Editar</button>
   </div>
 
-  
   <div v-else>
-    <!-- Se knight não for encontrado nenhum knight -->
+    <!-- Se nenhum cavaleiro for encontrado -->
     Cavaleiro não encontrado.
   </div>
 </template>
@@ -68,38 +51,24 @@ export default {
   props: {
     knight: Object,
   },
-  data() {
-    return {
-      editedNickname: '',
-      isModalOpen: false
-    };
-  },
   methods: {
-    getClassColor(knightClass) {
-      return classColors[knightClass] || "#262835";
-    },
     calculateAge,
     calculateAttack,
     calculateExperience,
     determineKeyAttribute,
     getImageSource,
-    openModal() {
-      this.isModalOpen = true;
-      this.editedNickname = this.knight.nickname; 
+    openModal(knight) {
+      this.$emit('open-edit-modal', knight);
     },
-    closeModal() {
-      this.isModalOpen = false;
+    capitalizeFirstLetter(word) {
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
     },
-    updateKnight() {
-      const updatedKnight = {
-        ...this.knight,
-        nickname: this.editedNickname
-      };
-      this.$emit('update-knight', updatedKnight);
-      this.closeModal();
-    }
+    capitalizeFirstLetters(sentence) {
+      return sentence.split(' ').map(word => this.capitalizeFirstLetter(word)).join(' ');
+    }, getClassColor(knightClass) {
+      return classColors[knightClass] || "#262835";
+    },
   },
-
 };
 </script>
 
@@ -121,7 +90,7 @@ export default {
   font-weight: bold;
 }
 
-img{
+img {
   max-width: 100px;
   max-height: 100px;
 }

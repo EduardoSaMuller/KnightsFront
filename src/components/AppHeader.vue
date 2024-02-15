@@ -8,7 +8,10 @@
       <h1>{{ title }}</h1>
     </div>
 
-    <div><h2>Eduardo S Muller</h2></div>
+    <div class="links">
+      <router-link to="/">Home</router-link>
+      <router-link to="/heroi">Herói</router-link>
+    </div>
   </header>
 </template>
 
@@ -34,7 +37,12 @@ export default {
   color: black;
   font-weight: 600;
 }
-
+a{
+  margin: 0 10px;
+}
+a:visited{
+  text-decoration: none;
+}
 .logo img {
   max-width: 160px;
 }

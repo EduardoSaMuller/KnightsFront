@@ -1,24 +1,24 @@
-# knightsfront
+# Knights Frontend 
 
-## Project setup
-```
+Esse é o nosso sistema frontend ao qual gerenciamos o estado de nossos cavaleiros, listamos seus nomes, editamos seus 'nickNames', deletamos eles e enviamos para o salão dos heróis. Além de podermos utilizar de uma barra de filtro, bastando digitar o nome do seu cavaleiro .
+
+## Funcionalidades 🚀
+
+- Ver a lista de cavaleiros
+- Adicionar novos cavaleiros
+- Atualizar informações de cavaleiros
+- Deletar nossos cavaleiros
+
+
+## Install the dependencies and start
+```bash
 yarn install
+# or
+npm install
 ```
 
-### Compiles and hot-reloads for development
-```
+```serve
+
 yarn serve
-```
 
-### Compiles and minifies for production
 ```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

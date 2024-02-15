@@ -1,23 +1,26 @@
 <template>
   <div class="knights-list">
-  <knight-card v-for="knight in filteredKnights" :key="knight.id" :knight="knight" @open-edit-modal="openKnightModalEdit" />
+    <knight-card v-for="knight in filteredKnights" :key="knight.id" :knight="knight" @open-edit-modal="openEditModal" />  
+    <KnightModalEdit v-if="isEditModalOpen" :knight="editingKnight" @close-modal="closeEditModal" />
   </div>
- 
 </template>
+
 <script>
 import { getAllKnights } from '@/services/KnightService';
 import KnightCard from './KnightCard.vue';
+import KnightModalEdit from './KnightModalEdit.vue';
 
 export default {
   components: {
-      KnightCard,
+    KnightCard,
+    KnightModalEdit
   },
   data() {
     return {
       knights: [],
-      searchTerm: '',
-      sortBy: 'name',
-      dataLoaded: false
+      dataLoaded: false,
+      isEditModalOpen: false,
+      editingKnight: {},
     };
   },
   computed: {
@@ -34,7 +37,7 @@ export default {
         });
       }
       return this.sortKnights(filtered);
-    }
+    },
   },
   mounted() {
     this.fetchKnights();
@@ -72,13 +75,19 @@ export default {
     calculateExperience(knight) {
       const age = new Date().getFullYear() - new Date(knight.birthday).getFullYear();
       return age >= 7 ? Math.floor((age - 7) * Math.pow(22, 1.45)) : 0;
-    }
+    },
+    openEditModal(knight) {
+      this.editingKnight = knight;
+      this.isEditModalOpen = true;
+    },
+    closeEditModal() {
+      this.isEditModalOpen = false;
+    },
   }
 };
 </script>
 
 <style scoped>
-
 .knights-list {
   display: flex;
   flex-wrap: wrap;
